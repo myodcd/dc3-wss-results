@@ -25,17 +25,17 @@
 
       if (!selected) return;
 
-      // filter table rows
+      // Filter table
       rows.forEach(row => {
         const id = row.getAttribute("data-id");
         row.style.display = (id === selected) ? "" : "none";
       });
 
-      // load training figures dynamically
+      // Load training figures
       document.getElementById("eval-curve").src = `figures/${selected}.eval_curve.png`;
       document.getElementById("plot-cost").src = `figures/${selected}.plot_cost.png`;
 
-      // load result HTML directly (no _clean)
+      // Load raw HTML (no _clean)
       document.getElementById("result-frame").src = `result-${selected}.html`;
 
       document.getElementById("img-box").style.display = "block";
@@ -44,8 +44,10 @@
 
     function showAll() {
       document.querySelectorAll("#results-table tr").forEach(row => row.style.display = "");
+
       document.getElementById("img-box").style.display = "none";
       document.getElementById("result-frame").style.display = "none";
+
       window.history.replaceState({}, document.title, "index.html");
     }
 
@@ -54,80 +56,97 @@
 </head>
 
 <body>
-  <!-- HEADER -->
-  <div class="header-title">DC3 WSS RESULTS</div>
 
-  <div class="container-fluid">
-    <div class="row">
+<!-- HEADER -->
+<div class="header-title">DC3 WSS RESULTS</div>
 
-      <!-- SIDEBAR -->
-      <div class="col-2 sidebar">
-        <h5 class="px-3">Results</h5>
-        <script>
-          for (let i = 1; i <= 18; i++) {
-            const id = String(i).padStart(2, "0");
-            document.write(`<a href="index.html?result=${id}">Result ${id}</a>`);
-          }
-        </script>
-      </div>
+<div class="container-fluid">
+  <div class="row">
 
-      <!-- MAIN -->
-      <div class="col-10">
-        <div class="table-container p-4">
-          <div class="d-flex justify-content-between align-items-center">
-            <h4>Execution Summary</h4>
-            <button class="btn btn-primary" onclick="showAll()">Show All</button>
-          </div>
+    <!-- SIDEBAR -->
+    <div class="col-2 sidebar">
+      <h5 class="px-3">Results</h5>
+      <script>
+        for (let i = 1; i <= 27; i++) {
+          const id = String(i).padStart(2, "0");
+          document.write(`<a href="index.html?result=${id}">Result ${id}</a>`);
+        }
+      </script>
+    </div>
 
-          <!-- TABLE -->
-          <div class="table-responsive mt-3">
-            <table class="table table-bordered table-striped table-hover align-middle sortable">
-              <thead class="table-dark">
-                <tr>
-                  <th>Result</th><th>Qty Samples</th><th>Epochs</th><th>SW</th><th>CorrEps</th>
-                  <th>Lr</th><th>CorrLr</th><th>CorrMom</th><th>CorrTrain</th><th>CorrTest</th>
-                  <th>Obj Result</th><th>Notes</th>
-                </tr>
-              </thead>
+    <!-- MAIN -->
+    <div class="col-10">
+      <div class="table-container p-4">
 
-              <tbody id="results-table">
-                <tr data-id="01"><td>1</td><td>30</td><td>10</td><td>100</td><td>0.5</td><td>0.001</td><td>0.05</td><td>0.1</td><td>10</td><td>5</td><td>€ 160.82</td><td></td></tr>
-                <tr data-id="02"><td>2</td><td>30</td><td>10</td><td>100</td><td>0.5</td><td>0.001</td><td>0.05</td><td>0.5</td><td>10</td><td>5</td><td>€ 139.88</td><td>Violated</td></tr>
-                <tr data-id="03"><td>3</td><td>30</td><td>10</td><td>100</td><td>0.5</td><td>0.001</td><td>0.01</td><td>0.1</td><td>10</td><td>5</td><td>€ 124.54</td><td></td></tr>
-                <tr data-id="04"><td>4</td><td>30</td><td>10</td><td>100</td><td>0.5</td><td>0.001</td><td>0.01</td><td>0.5</td><td>10</td><td>5</td><td>€ 162.41</td><td>Violated</td></tr>
-                <tr data-id="05"><td>5</td><td>30</td><td>15</td><td>1000</td><td>0.5</td><td>0.1</td><td>0.05</td><td>0.1</td><td>10</td><td>10</td><td>€ 132.3</td><td>Best tariff</td></tr>
-                <tr data-id="06"><td>6</td><td>30</td><td>10</td><td>100</td><td>0.5</td><td>0.001</td><td>0.1</td><td>0.1</td><td>10</td><td>5</td><td>€ 135.93</td><td></td></tr>
-                <tr data-id="07"><td>7</td><td>30</td><td>15</td><td>1000</td><td>0.5</td><td>0.01</td><td>0.01</td><td>0.01</td><td>10</td><td>10</td><td>€ 135.74</td><td>Best tariff</td></tr>
-                <tr data-id="08"><td>8</td><td>30</td><td>10</td><td>100</td><td>0.5</td><td>0.01</td><td>0.5</td><td>0.5</td><td>10</td><td>5</td><td>€ 157.03</td><td>Violated</td></tr>
-                <tr data-id="09"><td>9</td><td>30</td><td>15</td><td>1000</td><td>0.5</td><td>0.1</td><td>0.01</td><td>0.1</td><td>10</td><td>10</td><td>€ 134.19</td><td>Best tariff</td></tr>
-                <tr data-id="10"><td>10</td><td>30</td><td>10</td><td>500</td><td>0.5</td><td>0.001</td><td>0.05</td><td>0.1</td><td>10</td><td>5</td><td>€ 159.39</td><td></td></tr>
-                <tr data-id="11"><td>11</td><td>30</td><td>20</td><td>80</td><td>0.5</td><td>0.0005</td><td>0.05</td><td>0.01</td><td>8</td><td>12</td><td>€ 167.61</td><td>Violated</td></tr>
-                <tr data-id="12"><td>12</td><td>30</td><td>10</td><td>500</td><td>0.5</td><td>0.001</td><td>0.05</td><td>0.5</td><td>10</td><td>5</td><td>€ 130.87</td><td></td></tr>
-                <tr data-id="13"><td>13</td><td>30</td><td>15</td><td>1000</td><td>0.5</td><td>0.1</td><td>0.01</td><td>0.5</td><td>10</td><td>10</td><td>€ 173.54</td><td></td></tr>
-                <tr data-id="14"><td>14</td><td>30</td><td>20</td><td>80</td><td>0.01</td><td>0.0005</td><td>0.05</td><td>0.01</td><td>8</td><td>12</td><td>€ 150.29</td><td>Violated</td></tr>
-                <tr data-id="15"><td>15</td><td>30</td><td>10</td><td>500</td><td>0.5</td><td>0.001</td><td>0.01</td><td>0.1</td><td>10</td><td>5</td><td>€ 132.38</td><td></td></tr>
-                <tr data-id="16"><td>16</td><td>30</td><td>10</td><td>500</td><td>0.5</td><td>0.001</td><td>0.01</td><td>0.5</td><td>10</td><td>5</td><td>€ 123.3</td><td></td></tr>
-                <tr data-id="17"><td>17</td><td>30</td><td>15</td><td>1000</td><td>0.5</td><td>0.1</td><td>0.5</td><td>0.01</td><td>10</td><td>10</td><td>€ 134.89</td><td>Violated</td></tr>
-                <tr data-id="18"><td>18</td><td>30</td><td>20</td><td>80</td><td>0.5</td><td>0.0005</td><td>0.05</td><td>0.2</td><td>8</td><td>12</td><td>€ 162.18</td><td>Violated</td></tr>
-              </tbody>
-            </table>
-          </div>
-
-          <!-- IMAGE BLOCK -->
-          <div id="img-box" class="mt-4" style="display:none;">
-            <h4>Training Figures</h4>
-            <div class="row g-4">
-              <div class="col-6"><img id="eval-curve" class="img-fluid rounded shadow border"></div>
-              <div class="col-6"><img id="plot-cost" class="img-fluid rounded shadow border"></div>
-            </div>
-          </div>
-
-          <!-- IFRAME -->
-          <iframe id="result-frame" style="display:none;"></iframe>
-
+        <div class="d-flex justify-content-between align-items-center">
+          <h4>Execution Summary</h4>
+          <button class="btn btn-primary" onclick="showAll()">Show All</button>
         </div>
+
+        <!-- TABLE -->
+        <div class="table-responsive mt-3">
+          <table class="table table-bordered table-striped table-hover align-middle sortable">
+            <thead class="table-dark">
+              <tr>
+                <th>Result</th><th>Qty Samples</th><th>Epochs</th><th>SoftWeight</th><th>CorrEps</th>
+                <th>Lr</th><th>CorrLr</th><th>CorrMom</th><th>CorrTrain</th><th>CorrTest</th>
+                <th>Obj Result</th><th>Notes</th>
+              </tr>
+            </thead>
+
+            <tbody id="results-table">
+
+              <!-- ALL 27 RESULTS -->
+              <tr data-id="01"><td>1</td><td>30</td><td>10</td><td>100</td><td>0.5</td><td>0.001</td><td>0.05</td><td>0.1</td><td>10</td><td>5</td><td>€ 160.82</td><td></td></tr>
+              <tr data-id="02"><td>2</td><td>30</td><td>10</td><td>100</td><td>0.5</td><td>0.001</td><td>0.05</td><td>0.5</td><td>10</td><td>5</td><td>€ 139.88</td><td>Violated</td></tr>
+              <tr data-id="03"><td>3</td><td>30</td><td>10</td><td>100</td><td>0.5</td><td>0.001</td><td>0.01</td><td>0.1</td><td>10</td><td>5</td><td>€ 124.54</td><td></td></tr>
+              <tr data-id="04"><td>4</td><td>30</td><td>10</td><td>100</td><td>0.5</td><td>0.001</td><td>0.01</td><td>0.5</td><td>10</td><td>5</td><td>€ 162.41</td><td>Violated</td></tr>
+              <tr data-id="05"><td>5</td><td>30</td><td>15</td><td>1000</td><td>0.5</td><td>0.1</td><td>0.05</td><td>0.1</td><td>10</td><td>10</td><td>€ 132.3</td><td>Best tariff</td></tr>
+              <tr data-id="06"><td>6</td><td>30</td><td>10</td><td>100</td><td>0.5</td><td>0.001</td><td>0.1</td><td>0.1</td><td>10</td><td>5</td><td>€ 135.93</td><td></td></tr>
+              <tr data-id="07"><td>7</td><td>30</td><td>15</td><td>1000</td><td>0.5</td><td>0.01</td><td>0.01</td><td>0.01</td><td>10</td><td>10</td><td>€ 135.74</td><td>Best tariff</td></tr>
+              <tr data-id="08"><td>8</td><td>30</td><td>10</td><td>100</td><td>0.5</td><td>0.01</td><td>0.5</td><td>0.5</td><td>10</td><td>5</td><td>€ 157.03</td><td>Violated</td></tr>
+              <tr data-id="09"><td>9</td><td>30</td><td>15</td><td>1000</td><td>0.5</td><td>0.1</td><td>0.01</td><td>0.1</td><td>10</td><td>10</td><td>€ 134.19</td><td>Best tariff</td></tr>
+              <tr data-id="10"><td>10</td><td>30</td><td>10</td><td>500</td><td>0.5</td><td>0.001</td><td>0.05</td><td>0.1</td><td>10</td><td>5</td><td>€ 159.39</td><td></td></tr>
+
+              <tr data-id="11"><td>11</td><td>30</td><td>20</td><td>80</td><td>0.5</td><td>0.0005</td><td>0.05</td><td>0.01</td><td>8</td><td>12</td><td>€ 167.61</td><td>Violated</td></tr>
+              <tr data-id="12"><td>12</td><td>30</td><td>10</td><td>500</td><td>0.5</td><td>0.001</td><td>0.05</td><td>0.5</td><td>10</td><td>5</td><td>€ 130.87</td><td></td></tr>
+              <tr data-id="13"><td>13</td><td>30</td><td>15</td><td>1000</td><td>0.5</td><td>0.1</td><td>0.01</td><td>0.5</td><td>10</td><td>10</td><td>€ 173.54</td><td></td></tr>
+              <tr data-id="14"><td>14</td><td>30</td><td>20</td><td>80</td><td>0.01</td><td>0.0005</td><td>0.05</td><td>0.01</td><td>8</td><td>12</td><td>€ 150.29</td><td>Violated</td></tr>
+              <tr data-id="15"><td>15</td><td>30</td><td>10</td><td>500</td><td>0.5</td><td>0.001</td><td>0.01</td><td>0.1</td><td>10</td><td>5</td><td>€ 132.38</td><td></td></tr>
+              <tr data-id="16"><td>16</td><td>30</td><td>10</td><td>500</td><td>0.5</td><td>0.001</td><td>0.01</td><td>0.5</td><td>10</td><td>5</td><td>€ 123.3</td><td></td></tr>
+              <tr data-id="17"><td>17</td><td>30</td><td>15</td><td>1000</td><td>0.5</td><td>0.1</td><td>0.5</td><td>0.01</td><td>10</td><td>10</td><td>€ 134.89</td><td>Violated</td></tr>
+              <tr data-id="18"><td>18</td><td>30</td><td>20</td><td>80</td><td>0.5</td><td>0.0005</td><td>0.05</td><td>0.2</td><td>8</td><td>12</td><td>€ 162.18</td><td>Violated</td></tr>
+
+              <tr data-id="19"><td>19</td><td>30</td><td>10</td><td>500</td><td>0.5</td><td>0.001</td><td>0.5</td><td>0.1</td><td>10</td><td>5</td><td>€ 119.54</td><td>Violated</td></tr>
+              <tr data-id="20"><td>20</td><td>30</td><td>15</td><td>1000</td><td>0.5</td><td>0.1</td><td>0.5</td><td>0.1</td><td>10</td><td>10</td><td>€ 145.5</td><td>Violated</td></tr>
+              <tr data-id="21"><td>21</td><td>30</td><td>10</td><td>500</td><td>0.5</td><td>0.001</td><td>0.5</td><td>0.5</td><td>10</td><td>5</td><td>€ 148.14</td><td></td></tr>
+              <tr data-id="22"><td>22</td><td>30</td><td>20</td><td>80</td><td>0.01</td><td>0.0005</td><td>0.05</td><td>0.2</td><td>8</td><td>12</td><td>€ 130.22</td><td></td></tr>
+              <tr data-id="23"><td>23</td><td>30</td><td>10</td><td>100</td><td>0.5</td><td>0.0001</td><td>0.05</td><td>0.1</td><td>10</td><td>5</td><td>€ 140.63</td><td>Violated</td></tr>
+              <tr data-id="24"><td>24</td><td>30</td><td>10</td><td>100</td><td>0.5</td><td>0.0001</td><td>0.05</td><td>0.5</td><td>10</td><td>5</td><td>€ 147.15</td><td>Violated</td></tr>
+              <tr data-id="25"><td>25</td><td>30</td><td>20</td><td>80</td><td>0.5</td><td>0.0005</td><td>0.05</td><td>0.5</td><td>8</td><td>12</td><td>€ 150.24</td><td>Violated</td></tr>
+              <tr data-id="26"><td>26</td><td>30</td><td>15</td><td>1000</td><td>0.5</td><td>0.0001</td><td>0.05</td><td>0.01</td><td>10</td><td>10</td><td>€ 140.28</td><td>Violated</td></tr>
+              <tr data-id="27"><td>27</td><td>30</td><td>10</td><td>100</td><td>0.5</td><td>0.0001</td><td>0.01</td><td>0.1</td><td>10</td><td>5</td><td>€ 139.52</td><td></td></tr>
+
+            </tbody>
+          </table>
+        </div>
+
+        <!-- IMAGE BLOCK -->
+        <div id="img-box" class="mt-4" style="display:none;">
+          <h4>Training Figures</h4>
+          <div class="row g-4">
+            <div class="col-6"><img id="eval-curve" class="img-fluid rounded shadow border"></div>
+            <div class="col-6"><img id="plot-cost" class="img-fluid rounded shadow border"></div>
+          </div>
+        </div>
+
+        <!-- IFRAME -->
+        <iframe id="result-frame" style="display:none;"></iframe>
+
       </div>
     </div>
   </div>
+</div>
+
 </body>
 </html>
